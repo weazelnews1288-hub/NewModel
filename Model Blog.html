@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Model Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+@property --c1{syntax:"<color>";inherits:true;initial-value:#ff3d9a}
+@property --c2{syntax:"<color>";inherits:true;initial-value:#7c4dff}
+@property --c3{syntax:"<color>";inherits:true;initial-value:#2de2e6}
+:root{--bg:#0b0614;--text:#f5f1ff;--muted:#a79fc0;--line:rgba(255,255,255,.13);--glass:rgba(255,255,255,.06);color-scheme:dark;
+transition:--c1 .9s,--c2 .9s,--c3 .9s;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;width:100%}
+body{background:var(--bg);color:var(--text);font-family:Manrope,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:rgba(11,6,20,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:30}
+body::after{content:"";position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+.b{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.b1{width:60vmax;height:60vmax;left:-18vmax;top:-22vmax;background:var(--c1);animation:f1 24s ease-in-out infinite alternate}
+.b2{width:55vmax;height:55vmax;right:-20vmax;top:10vmax;background:var(--c2);animation:f2 28s ease-in-out infinite alternate}
+.b3{width:45vmax;height:45vmax;left:20vmax;bottom:-25vmax;background:var(--c3);opacity:.35;animation:f1 32s ease-in-out infinite alternate-reverse}
+@keyframes f1{to{transform:translate(12vmax,10vmax) scale(1.15)}}
+@keyframes f2{to{transform:translate(-14vmax,8vmax) scale(.9)}}
+#glow{position:fixed;left:0;top:0;width:460px;height:460px;margin:-230px 0 0 -230px;border-radius:50%;background:radial-gradient(circle,var(--c1),transparent 65%);opacity:.16;pointer-events:none;z-index:0;display:none}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px clamp(16px,4vw,56px);background:rgba(11,6,20,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font-family:Unbounded,"Arial Black",system-ui,sans-serif;font-weight:800;font-size:clamp(14px,1.8vw,19px);letter-spacing:.08em;text-transform:uppercase;color:var(--text);text-decoration:none}
+.logo i{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 0 18px var(--c1)}
+.pill{display:none;padding:9px 18px;border:1px solid var(--line);border-radius:99px;background:var(--glass);color:var(--text);text-decoration:none;font-size:13px;font-weight:600;transition:.25s}
+.pill:hover{border-color:var(--c1);box-shadow:0 0 24px -4px var(--c1)}
+main{position:relative;z-index:1;width:100%}
+.view{display:none}
+.view.on{display:block}
+.wrap{width:100%;padding:0 clamp(16px,4vw,56px)}
+h1,h2{font-family:Unbounded,"Arial Black",system-ui,sans-serif;margin:0;line-height:1.05;font-weight:600;overflow-wrap:anywhere}
+.grad{background:linear-gradient(100deg,var(--c1),var(--c2) 60%,var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.chip{display:inline-block;padding:7px 16px;border:1px solid var(--line);border-radius:99px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.hero{padding:clamp(40px,9vw,120px) 0 clamp(36px,6vw,80px)}
+.hero h1{font-size:clamp(28px,7.4vw,104px);margin:22px 0}
+.hero p{max-width:620px;color:var(--muted);font-size:clamp(15px,1.5vw,19px);margin:0}
+.marq{overflow:hidden;margin:0 -3%;width:106%;transform:rotate(-2deg);background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));padding:14px 0;margin-bottom:clamp(40px,7vw,90px)}
+.mt{display:flex;width:max-content;animation:mq 38s linear infinite}
+.mt span{white-space:pre;font-family:Unbounded,"Arial Black",system-ui,sans-serif;font-weight:800;font-size:clamp(16px,2.4vw,30px);text-transform:uppercase;color:#0b0614}
+@keyframes mq{to{transform:translateX(-50%)}}
+.grid{display:grid;gap:clamp(16px,2.4vw,36px);grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));width:100%;padding-bottom:clamp(50px,8vw,110px)}
+@media (min-width:900px){.card:nth-child(even){margin-top:56px}}
+.card{position:relative;display:block;aspect-ratio:3/4.3;border-radius:28px;overflow:hidden;border:1px solid var(--line);color:var(--text);text-decoration:none;transition:transform .4s,box-shadow .4s,border-color .4s;background:#150c26}
+.card:hover{transform:translateY(-8px);border-color:var(--c1);box-shadow:0 30px 70px -24px var(--c1)}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.card:hover img{transform:scale(1.08)}
+.card .num{position:absolute;left:20px;top:18px;font-family:Unbounded,"Arial Black",system-ui,sans-serif;font-weight:800;font-size:15px}
+.card .chip{position:absolute;right:16px;top:14px}
+.card .info{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;padding:90px 22px 22px;background:linear-gradient(to top,rgba(11,6,20,.94),rgba(11,6,20,0))}
+.card h2{font-size:clamp(18px,1.9vw,24px)}
+.card p{margin:8px 0 0;font-size:13px;color:#cfc7e4}
+.go{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:20px;color:#0b0614;background:linear-gradient(135deg,var(--c1),var(--c2));transition:transform .4s}
+.card:hover .go{transform:rotate(-45deg) scale(1.1)}
+.mhead{padding:clamp(36px,7vw,96px) 0 clamp(28px,5vw,60px)}
+.mhead h1{font-size:clamp(30px,8.4vw,120px);margin:22px 0}
+.mhead h1 span{display:block}
+.mhead p{max-width:640px;color:var(--muted);font-size:clamp(15px,1.5vw,19px);margin:0 0 28px}
+.stats{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));max-width:640px}
+.stats div{padding:14px 18px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.stats small{display:block;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.stats b{font-family:Unbounded,"Arial Black",system-ui,sans-serif;font-size:16px;font-weight:600}
+.gallery{columns:3 270px;column-gap:clamp(12px,1.8vw,24px);width:100%}
+.gallery img{width:100%;display:block;margin:0 0 clamp(12px,1.8vw,24px);border-radius:22px;border:1px solid var(--line);cursor:zoom-in;break-inside:avoid;background:#150c26;transition:transform .4s,box-shadow .4s}
+.gallery img:hover{transform:scale(1.02);box-shadow:0 24px 60px -20px var(--c1)}
+.next{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:clamp(40px,7vw,90px) 0;padding:clamp(22px,4vw,44px);border:1px solid var(--line);border-radius:32px;background:linear-gradient(120deg,color-mix(in srgb,var(--n1) 30%,transparent),color-mix(in srgb,var(--n2) 22%,transparent));color:var(--text);text-decoration:none;transition:.4s}
+.next:hover{border-color:var(--n1);transform:translateY(-4px)}
+.next small{color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+.next h2{font-size:clamp(22px,4vw,52px);margin-top:6px}
+.next .go{width:clamp(48px,6vw,76px);height:clamp(48px,6vw,76px);background:linear-gradient(135deg,var(--n1),var(--n2))}
+footer{position:relative;z-index:1;width:100%;padding:28px clamp(16px,4vw,56px) 40px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s}
+.rv.in{opacity:1;transform:none}
+.gallery img.rv.in:hover{transform:scale(1.02)}
+#lb{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(6,3,12,.95);padding:clamp(12px,4vw,56px)}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:16px}
+#lb button{position:absolute;background:var(--glass);border:1px solid var(--line);color:#fff;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;backdrop-filter:blur(10px)}
+#lb button:hover{border-color:var(--c1)}
+#lx{top:calc(14px + env(safe-area-inset-top,0px));right:14px}
+#lp{left:12px;top:50%}#ln{right:12px;top:50%}
+#lc{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;color:var(--muted);font-size:13px;letter-spacing:.1em}
+@media (hover:hover){#glow{display:block}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="aurora"><div class="b b1"></div><div class="b b2"></div><div class="b b3"></div></div>
+<div id="glow"></div>
+<header>
+  <a class="logo" href="#"><i></i>Model Blog</a>
+  <a class="pill" id="back" href="#">← Все модели</a>
+</header>
+<main>
+  <section class="view" id="home">
+    <div class="wrap">
+      <div class="hero">
+        <span class="chip rv">Portfolio · 2026</span>
+        <h1 class="rv">Лица, которые <span class="grad">запоминаются</span></h1>
+        <p class="rv">Выберите модель, чтобы увидеть её портфолио, образы и лучшие кадры.</p>
+      </div>
+    </div>
+    <div class="marq"><div class="mt"><span>Fashion ✦ Beauty ✦ Runway ✦ Lifestyle ✦ Editorial ✦ Fashion ✦ Beauty ✦ Runway ✦ Lifestyle ✦ Editorial ✦ </span><span>Fashion ✦ Beauty ✦ Runway ✦ Lifestyle ✦ Editorial ✦ Fashion ✦ Beauty ✦ Runway ✦ Lifestyle ✦ Editorial ✦ </span></div></div>
+    <div class="wrap"><div class="grid" id="grid"></div></div>
+  </section>
+  <section class="view" id="model">
+    <div class="wrap">
+      <div class="mhead">
+        <span class="chip rv" id="mtag"></span>
+        <h1 class="rv" id="mname"></h1>
+        <p class="rv" id="mdesc"></p>
+        <div class="stats rv" id="mstats"></div>
+      </div>
+      <div class="gallery" id="gallery"></div>
+      <a class="next rv" id="next" href="#"><div><small>Следующая модель</small><h2 id="nname"></h2></div><span class="go">→</span></a>
+    </div>
+  </section>
+</main>
+<footer>© Model Blog · Все права защищены</footer>
+<div id="lb"><button id="lx" aria-label="Закрыть">×</button><button id="lp" aria-label="Назад">‹</button><img alt=""><button id="ln" aria-label="Вперёд">›</button><div id="lc"></div></div>
+
+<script>
+/* Свои фото: впишите пути в photos, например photos:["img/anna1.jpg","img/anna2.jpg"].
+   Пока массив пуст, показываются цветные заглушки. c1/c2 — фирменные цвета модели. */
+var MODELS=[
+ {id:"anna",name:"Анна Лебедева",tag:"Fashion · Editorial",desc:"Работает с ведущими дизайнерами, любит минимализм и чистые линии.",bio:"Анна — лицо нескольких осенних кампаний. Её стиль — холодная элегантность и спокойная уверенность в кадре.",stats:[["Рост","178 см"],["Глаза","Серые"],["Город","Москва"]],c1:"#ff4d6d",c2:"#ffb347",c3:"#ff7ae0",photos:[]},
+ {id:"sofia",name:"София Морель",tag:"Beauty · Commercial",desc:"Мягкая красота и выразительный взгляд, фокус на beauty-съёмках.",bio:"София снимается для косметических брендов и глянцевых журналов. Любит естественный свет и тёплые тона.",stats:[["Рост","172 см"],["Глаза","Карие"],["Город","Париж"]],c1:"#b45cff",c2:"#ff5cc8",c3:"#5c7cff",photos:[]},
+ {id:"eva",name:"Ева Нордстрём",tag:"Runway · Street",desc:"Подиумный опыт и яркий уличный стиль, высокий рост и графичные образы.",bio:"Ева открывала показы на неделях моды и ведёт блог о стрит-стайле. Смелые образы — её фирменная черта.",stats:[["Рост","182 см"],["Глаза","Голубые"],["Город","Стокгольм"]],c1:"#22e4ff",c2:"#4d6bff",c3:"#a35cff",photos:[]},
+ {id:"milana",name:"Милана Ким",tag:"Lifestyle · Travel",desc:"Живые эмоции и путешествия: lifestyle-съёмки по всему миру.",bio:"Милана совмещает работу моделью и путешествия. В портфолио — съёмки на пляжах, в городах и горах.",stats:[["Рост","170 см"],["Глаза","Чёрные"],["Город","Сеул"]],c1:"#c8ff3d",c2:"#19e0a4",c3:"#2ad4ff",photos:[]}
+];
+function ph(m,i,w,h){
+  var ini=m.name.split(" ").map(function(s){return s[0]}).join("");
+  var x1=(20+i*37)%80+10,y1=(15+i*29)%70+10,x2=(75-i*23+100)%80+10,y2=(80-i*31+100)%70+10;
+  var s='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><defs><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="'+Math.round(w/7)+'"/></filter></defs><rect width="100%" height="100%" fill="#120a22"/><g filter="url(#b)"><circle cx="'+x1+'%" cy="'+y1+'%" r="'+Math.round(w*.42)+'" fill="'+m.c1+'"/><circle cx="'+x2+'%" cy="'+y2+'%" r="'+Math.round(w*.4)+'" fill="'+m.c2+'" opacity=".85"/></g><text x="50%" y="52%" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="2" font-family="Arial Black,Arial,sans-serif" font-size="'+Math.round(w/3.2)+'" text-anchor="middle" dominant-baseline="middle">'+ini+'</text></svg>';
+  return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);
+}
+function photos(m){
+  if(m.photos.length) return m.photos;
+  var d=[[600,800],[600,430],[600,760],[600,620],[600,830],[600,480],[600,780],[600,660]],r=[];
+  d.forEach(function(v,i){r.push(ph(m,i+1,v[0],v[1]))});
+  return r;
+}
+var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.08}):null;
+function reveal(root){root.querySelectorAll(".rv").forEach(function(el){el.classList.remove("in");if(io)io.observe(el);else el.classList.add("in")})}
+var grid=document.getElementById("grid");
+MODELS.forEach(function(m,i){
+  var a=document.createElement("a");a.className="card rv";a.href="#"+m.id;
+  a.style.setProperty("--c1",m.c1);a.style.setProperty("--c2",m.c2);
+  a.innerHTML='<img alt="'+m.name+'" src="'+(m.photos[0]||ph(m,0,600,860))+'"><span class="num">0'+(i+1)+'</span><span class="chip">'+m.tag+'</span><div class="info"><div><h2>'+m.name+'</h2><p>'+m.desc+'</p></div><span class="go">→</span></div>';
+  grid.appendChild(a);
+});
+var lb=document.getElementById("lb"),lbi=lb.querySelector("img"),lc=document.getElementById("lc"),L=[],li=0;
+function show(i){li=(i+L.length)%L.length;lbi.src=L[li];lc.textContent=(li+1)+" / "+L.length}
+function openLb(i){show(i);lb.classList.add("on")}
+function closeLb(){lb.classList.remove("on")}
+lb.addEventListener("click",function(e){if(e.target===lb||e.target===lbi)closeLb()});
+document.getElementById("lx").onclick=closeLb;
+document.getElementById("lp").onclick=function(e){e.stopPropagation();show(li-1)};
+document.getElementById("ln").onclick=function(e){e.stopPropagation();show(li+1)};
+document.addEventListener("keydown",function(e){if(!lb.classList.contains("on"))return;if(e.key==="Escape")closeLb();if(e.key==="ArrowLeft")show(li-1);if(e.key==="ArrowRight")show(li+1)});
+var tx=0;lb.addEventListener("touchstart",function(e){tx=e.touches[0].clientX},{passive:true});
+lb.addEventListener("touchend",function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(li+(d<0?1:-1))});
+var glow=document.getElementById("glow");
+addEventListener("pointermove",function(e){glow.style.transform="translate("+e.clientX+"px,"+e.clientY+"px)"});
+function theme(m){var r=document.documentElement.style;if(m){r.setProperty("--c1",m.c1);r.setProperty("--c2",m.c2);r.setProperty("--c3",m.c3)}else{r.removeProperty("--c1");r.removeProperty("--c2");r.removeProperty("--c3")}}
+function route(){
+  var id=(location.hash||"").replace("#",""),idx=-1;
+  MODELS.forEach(function(x,i){if(x.id===id)idx=i});
+  var home=document.getElementById("home"),mv=document.getElementById("model"),back=document.getElementById("back");
+  closeLb();window.scrollTo(0,0);
+  if(idx<0){theme(null);mv.classList.remove("on");home.classList.add("on");back.style.display="none";document.title="Model Blog";reveal(home);return}
+  var m=MODELS[idx],n=MODELS[(idx+1)%MODELS.length];
+  theme(m);home.classList.remove("on");mv.classList.add("on");back.style.display="inline-block";
+  var p=m.name.split(" ");
+  document.getElementById("mtag").textContent=m.tag;
+  document.getElementById("mname").innerHTML="<span>"+p[0]+'</span><span class="grad">'+(p[1]||"")+"</span>";
+  document.getElementById("mdesc").textContent=m.bio;
+  document.getElementById("mstats").innerHTML=m.stats.map(function(s){return"<div><small>"+s[0]+"</small><b>"+s[1]+"</b></div>"}).join("");
+  var g=document.getElementById("gallery");g.innerHTML="";L=photos(m);
+  L.forEach(function(src,i){var im=document.createElement("img");im.className="rv";im.src=src;im.alt=m.name;im.loading="lazy";im.onclick=function(){openLb(i)};g.appendChild(im)});
+  var nx=document.getElementById("next");nx.href="#"+n.id;nx.style.setProperty("--n1",n.c1);nx.style.setProperty("--n2",n.c2);
+  document.getElementById("nname").textContent=n.name;
+  document.title=m.name+" — Model Blog";reveal(mv);
+}
+addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
