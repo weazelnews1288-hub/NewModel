@@ -153,7 +153,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;
 /* ═══════════════════════════════════════════════════════════════
    5. КАРТОЧКИ МОДЕЛЕЙ НА ГЛАВНОЙ
    ═══════════════════════════════════════════════════════════════ */
-.grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--card-min)),1fr));width:100%;padding-bottom:clamp(50px,8vw,110px)}
+.grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(min(60%,var(--card-min)),1fr));width:100%;padding-bottom:clamp(50px,8vw,110px)}
 /* КРУПНЫЕ КАРТОЧКИ: включаются сами, если моделей меньше числа BIG_CARDS_IF_LESS_THAN (см. JS внизу).
    Число колонок задаёт скрипт; на планшете — 2 колонки, на телефоне — 1. */
 .grid.big{grid-template-columns:repeat(var(--cols,2),1fr)}
