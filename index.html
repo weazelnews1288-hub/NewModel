@@ -75,7 +75,8 @@
   --card-ratio:3/4.3;           /* ✏️ пропорции карточки (ширина/высота), напр. 1/1 или 3/4 */
   --card-min:290px;             /* ✏️ минимальная ширина карточки: меньше — больше карточек в ряд */
   --card-offset:56px;           /* ✏️ «лесенка» карточек на компьютере (0 — выключить) */
-  --card-ratio-big:4/5;         /* ✏️ пропорции КРУПНЫХ карточек (включаются, когда моделей мало) */
+  --card-ratio-big:3/4.3;       /* ✏️ пропорции карточек, когда моделей мало */
+  --card-max-big:360px;         /* ✏️ макс. ширина карточки, когда моделей мало (меньше число — меньше карточки) */
   --gallery-w:270px;            /* ✏️ ширина колонки галереи: меньше — больше колонок */
 
   /* ── ЭФФЕКТЫ ───────────────────────────────────────── */
@@ -153,17 +154,17 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;
 /* ═══════════════════════════════════════════════════════════════
    5. КАРТОЧКИ МОДЕЛЕЙ НА ГЛАВНОЙ
    ═══════════════════════════════════════════════════════════════ */
-.grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(min(60%,var(--card-min)),1fr));width:100%;padding-bottom:clamp(50px,8vw,110px)}
-/* КРУПНЫЕ КАРТОЧКИ: включаются сами, если моделей меньше числа BIG_CARDS_IF_LESS_THAN (см. JS внизу).
+.grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--card-min)),1fr));width:100%;padding-bottom:clamp(50px,8vw,110px)}
+/* РЕЖИМ «МАЛО МОДЕЛЕЙ»: включается сам, если моделей меньше числа BIG_CARDS_IF_LESS_THAN (см. JS внизу).
+   Карточки не растягиваются на весь экран: максимум --card-max-big в ширину, ряд по центру.
    Число колонок задаёт скрипт; на планшете — 2 колонки, на телефоне — 1. */
-.grid.big{grid-template-columns:repeat(var(--cols,2),1fr)}
+.grid.big{grid-template-columns:repeat(var(--cols,2),1fr);max-width:calc(var(--cols,2)*var(--card-max-big) + (var(--cols,2) - 1)*var(--gap));margin-inline:auto}
 .grid.big .card{aspect-ratio:var(--card-ratio-big)}
-.grid.big .card h2{font-size:clamp(22px,2.6vw,36px)}
-.grid.big .card p{font-size:clamp(13px,1.2vw,16px)}
-.grid.big .card .go{width:56px;height:56px}
-.grid.big.one{max-width:640px;margin-inline:auto}
-@media (max-width:900px){.grid.big{grid-template-columns:repeat(2,1fr)}.grid.big.one{grid-template-columns:1fr}}
-@media (max-width:560px){.grid.big{grid-template-columns:1fr}}
+.grid.big .card h2{font-size:clamp(20px,2.1vw,28px)}
+.grid.big .card p{font-size:clamp(13px,1.1vw,15px)}
+.grid.big.one{grid-template-columns:1fr;max-width:var(--card-max-big)}
+@media (max-width:900px){.grid.big{grid-template-columns:repeat(2,1fr);max-width:calc(2*var(--card-max-big) + var(--gap))}}
+@media (max-width:560px){.grid.big{grid-template-columns:1fr;max-width:var(--card-max-big)}}
 @media (min-width:900px){.card:nth-child(even){margin-top:var(--card-offset)}}
 .card{position:relative;display:block;aspect-ratio:var(--card-ratio);border-radius:var(--radius-card);overflow:hidden;border:1px solid var(--line);color:var(--card-title);text-decoration:none;transition:transform .4s,box-shadow .4s,border-color .4s;background:#18121f}
 .card:hover{transform:translateY(-8px);border-color:var(--c1);box-shadow:0 30px 70px -24px var(--c1)}
@@ -272,7 +273,7 @@ footer{position:relative;z-index:1;width:100%;padding:28px var(--side) 40px;bord
 /* ═══════════════════════════════════════════════════════════════
    НАСТРОЙКИ САЙТА (JS)
    ═══════════════════════════════════════════════════════════════ */
-var BIG_CARDS_IF_LESS_THAN=5; /* ✏️ если моделей МЕНЬШЕ этого числа — карточки на главной крупные. 0 — всегда обычные, 99 — всегда крупные */
+var BIG_CARDS_IF_LESS_THAN=5; /* ✏️ если моделей МЕНЬШЕ этого числа — включается режим «мало моделей» (карточки ограничены по ширине и стоят по центру). 0 — выключить */
 var SITE="Only Model"; /* ✏️ название, которое показывается во вкладке браузера */
 
 /* ═══════════════════════════════════════════════════════════════
@@ -404,10 +405,10 @@ MODELS.forEach(function(m,i){
   a.innerHTML='<img alt="'+m.name+'" src="'+cover+'"><span class="num">0'+(i+1)+'</span><span class="chip">'+m.tag+'</span><div class="info"><div><h2>'+m.name+'</h2><p>'+m.desc+'</p></div><span class="go">→</span></div>';
   grid.appendChild(a);
 });
-/* Крупные карточки, если моделей мало (1 модель — одна большая, 2 — две, 3 — три, 4 — сетка 2×2) */
+/* Режим «мало моделей»: колонок столько же, сколько моделей (но не больше 4) */
 if(MODELS.length<BIG_CARDS_IF_LESS_THAN){
   grid.classList.add("big");
-  grid.style.setProperty("--cols",Math.min(MODELS.length===4?2:MODELS.length,3));
+  grid.style.setProperty("--cols",Math.min(MODELS.length,4));
   if(MODELS.length===1)grid.classList.add("one");
 }
 
